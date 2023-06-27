@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "KickKit",
+  "version": "1.0.0",
+  "description": "KickKit, extension for Kick to enhance the experience.",
+  "icons": {
+    "128": "vite.svg"
+  },
+  "host_permissions": ["*://*.kick.com/*"],
+  "permissions": ["tabs", "activeTab", "scripting", "webNavigation"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["content_script.js"],
+      "matches": ["https://*.kick.com/*"]
+    }
+  ],
+  "action": {}
+}
