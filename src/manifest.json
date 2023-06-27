@@ -3,9 +3,6 @@
   "name": "KickKit",
   "version": "1.0.0",
   "description": "KickKit, extension for Kick to enhance the experience.",
-  "icons": {
-    "128": "vite.svg"
-  },
   "host_permissions": ["*://*.kick.com/*"],
   "permissions": ["tabs", "activeTab", "scripting", "webNavigation"],
   "background": {
