@@ -1,15 +1,12 @@
-export const VALID_HOSTS = [
-  'i.imgur.com',
-  'imgur.com',
-  'cdn.discordapp.com',
-  'media.discordapp.net',
-  'media.tenor.com',
-] as const;
-export const VALID_IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bpm'] as const;
-export const MAX_IMAGE_SIZE = 5_000_000;
-
-export type ValidHost = (typeof VALID_HOSTS)[number];
-export type ValidImageExtension = (typeof VALID_IMAGE_EXTENSIONS)[number];
+import {
+  IMAGE_CONTENT_TYPE,
+  MAX_IMAGE_SIZE,
+  RESPONSE_HEADERS,
+  VALID_HOSTS,
+  VALID_IMAGE_EXTENSIONS,
+  type ValidHost,
+  type ValidImageExtension,
+} from './image-constants';
 
 export const isValidImageUrl = (potentialImageUrl: string) => {
   try {
@@ -23,7 +20,7 @@ export const isValidImageUrl = (potentialImageUrl: string) => {
     }
 
     const { type, size } = getImageMeta(href);
-    const isImage = type && type.startsWith('image/');
+    const isImage = type && type.startsWith(IMAGE_CONTENT_TYPE);
     const isValidSize = size && size < MAX_IMAGE_SIZE;
     if (!isImage || !isValidSize) {
       throw new Error();
@@ -42,8 +39,8 @@ export const getImageMeta = (imageUrl: string): { type: string | null; size: num
     xhr.send(null);
 
     if (xhr.status === 200) {
-      const type = xhr.getResponseHeader('Content-Type');
-      const size = xhr.getResponseHeader('Content-Length') as number | null;
+      const type = xhr.getResponseHeader(RESPONSE_HEADERS.contentType);
+      const size = xhr.getResponseHeader(RESPONSE_HEADERS.contentLength) as number | null;
 
       return {
         type,
