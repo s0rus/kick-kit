@@ -13,19 +13,17 @@ export type ValidImageExtension = (typeof VALID_IMAGE_EXTENSIONS)[number];
 
 export const isValidImageUrl = (potentialImageUrl: string) => {
   try {
-    const imageUrl = new URL(potentialImageUrl);
-    const imagePathname = imageUrl.pathname;
-    const imageExtension = imagePathname.substring(imagePathname.lastIndexOf('.'));
+    const { pathname, hostname, href } = new URL(potentialImageUrl);
+    const imageExtension = pathname.substring(pathname.lastIndexOf('.'));
 
-    const isValidHost = VALID_HOSTS.includes(imageUrl.hostname as ValidHost);
+    const isValidHost = VALID_HOSTS.includes(hostname as ValidHost);
     const isValidExtension = VALID_IMAGE_EXTENSIONS.includes(imageExtension.toLowerCase() as ValidImageExtension);
-
     if (!isValidHost || !isValidExtension) {
       throw new Error();
     }
 
-    const { size, type } = getImageMeta(imageUrl.href);
-    const isImage = type?.startsWith('image/') ?? false;
+    const { type, size } = getImageMeta(href);
+    const isImage = type && type.startsWith('image/');
     const isValidSize = size && size < MAX_IMAGE_SIZE;
     if (!isImage || !isValidSize) {
       throw new Error();
