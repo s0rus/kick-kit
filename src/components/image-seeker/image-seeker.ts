@@ -1,4 +1,5 @@
 import { log } from '../utils/logger';
+import { isValidImageUrl } from './image-url-parser';
 
 log('Image seeker loaded!');
 
@@ -11,7 +12,6 @@ const injectImage = (node: Element, imageUrl: string) => {
   imgElement.src = imageUrl;
   imgElement.alt = 'KickKit injected image';
 
-  console.log(node);
   node.appendChild(imgElement);
 };
 
@@ -24,8 +24,10 @@ const getAnchorTags = (node: Element) => {
       if (nestedSpan) {
         const anchorTag = nestedSpan.querySelector('a');
         if (anchorTag) {
-          // ! TODO: Validate the image href
           const potentialImageUrl = anchorTag.href;
+          if (!isValidImageUrl(potentialImageUrl)) {
+            return;
+          }
           anchorTag.textContent = '';
           injectImage(anchorTag, potentialImageUrl);
         }
@@ -47,8 +49,10 @@ const searchForChatEntries = (node: Node) => {
 };
 
 document.body.querySelectorAll(`.${KICKKIT_IMAGE_TOKEN}`).forEach((node) => {
-  // ! TODO: Validate the image href
   const potentialImageUrl = (node as HTMLAnchorElement).href;
+  if (!isValidImageUrl(potentialImageUrl)) {
+    return;
+  }
   injectImage(node, potentialImageUrl);
 });
 
