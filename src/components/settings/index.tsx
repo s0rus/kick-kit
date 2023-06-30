@@ -14,17 +14,28 @@ const renderSettingsModal = () => {
   );
 };
 
-const observeContainer = () => {
-  const container = document.body.querySelector(`.${MAIN_NAVBAR_TOKEN}`);
-  if (container) {
-    container.insertBefore(settingsModalElement, container.children[container.childElementCount - 1]);
-    renderSettingsModal();
-  } else {
-    const observer = new MutationObserver(observeContainer);
-    observer.observe(document.body, { childList: true, subtree: true });
-  }
+const waitForContainer = () => {
+  return new Promise((resolve) => {
+    const container = document.body.querySelector(`.${MAIN_NAVBAR_TOKEN}`);
+    if (container) {
+      resolve(container);
+    } else {
+      const observer = new MutationObserver(() => {
+        const observerContainer = document.body.querySelector(`.${MAIN_NAVBAR_TOKEN}`);
+        if (observerContainer) {
+          observer.disconnect();
+          resolve(observerContainer);
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+  });
 };
 
-observeContainer();
+waitForContainer().then((container) => {
+  const c = container as Element;
+  c.insertBefore(settingsModalElement, c.children[c.childElementCount - 1]);
+  renderSettingsModal();
+});
 
 export default {};
