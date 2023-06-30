@@ -6,7 +6,6 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: 'index.html',
         background: 'src/background.ts',
         content_script: 'src/content_script.ts',
       },
