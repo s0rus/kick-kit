@@ -10,7 +10,8 @@ export default defineConfig({
         content_script: 'src/content_script.ts',
       },
       output: {
-        entryFileNames: `[name].js`,
+        assetFileNames: '[name].[ext]',
+        entryFileNames: '[name].js',
       },
     },
   },
