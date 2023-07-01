@@ -5,6 +5,7 @@ import SettingsModal from './settings-modal';
 
 const settingsModalElement = document.createElement('div');
 settingsModalElement.id = SETTINGS_MODAL_ID;
+settingsModalElement.classList.add('h-7');
 
 const renderSettingsModal = () => {
   ReactDOM.createRoot(settingsModalElement).render(

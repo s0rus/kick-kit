@@ -1,4 +1,4 @@
 import './components';
-import { log } from './components/utils/logger';
+import { log } from './utils/logger';
 
 log('Content script loaded!');

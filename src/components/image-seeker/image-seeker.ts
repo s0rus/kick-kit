@@ -1,4 +1,4 @@
-import { log } from '../utils/logger';
+import { log } from '@/utils/logger';
 import { isValidImageUrl } from './image-url-parser';
 
 log('Image seeker loaded!');
