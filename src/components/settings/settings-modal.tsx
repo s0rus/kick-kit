@@ -4,12 +4,7 @@ import { useFeatureContext } from '../../context/FeaturesContext';
 import SettingsButton from './SettingsButton';
 
 const SettingsModal: React.FC = () => {
-  const {
-    streamerMode,
-    changeStreamerMode,
-    streamableMode,
-    changeStreamableMode,
-  } = useFeatureContext();
+  const { streamerMode, changeStreamerMode } = useFeatureContext();
 
   return (
     <Dialog.Root>
@@ -37,11 +32,6 @@ const SettingsModal: React.FC = () => {
               description={streamerMode ? 'Enabled' : 'Disabled'}
               text='Streamer Mode:'
               onClick={() => changeStreamerMode(!streamerMode)}
-            />
-            <SettingsButton
-              description={streamableMode ? 'Enabled' : 'Disabled'}
-              text='Show Streamable title instead of link:'
-              onClick={() => changeStreamableMode(!streamableMode)}
             />
           </div>
         </Dialog.Content>
