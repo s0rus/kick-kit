@@ -1,16 +1,47 @@
 import { log } from '../utils/logger';
 import { isValidImageUrl } from './image-url-parser';
-
 log('Image seeker loaded!');
 
 const KICKKIT_IMAGE_TOKEN = 'kickkit-image' as const;
 const CHAT_ENTRY_CLASS = 'chat-entry' as const;
-
 const injectImage = (node: Element, imageUrl: string) => {
   node.classList.add(KICKKIT_IMAGE_TOKEN);
   const imgElement = document.createElement('img');
   imgElement.src = imageUrl;
   imgElement.alt = 'KickKit injected image';
+
+  const imgStyles: Partial<CSSStyleDeclaration> = {
+    transition: '0.3s all ease-in-out',
+    borderRadius: '8px',
+    border: '1px solid #18181b;',
+  };
+
+  Object.assign(imgElement.style, imgStyles);
+
+  const bodyElement = document.querySelector('body') as Element;
+  const updateImageBlur = () => {
+    if (
+      bodyElement instanceof HTMLElement &&
+      bodyElement.getAttribute('streamermode') === 'on'
+    ) {
+      imgElement.style.filter = 'blur(8px)';
+    } else {
+      imgElement.style.filter = 'blur(0)';
+    }
+  };
+
+  const observer = new MutationObserver(updateImageBlur);
+  observer.observe(bodyElement, { attributes: true });
+
+  updateImageBlur();
+
+  imgElement.addEventListener('mouseenter', () => {
+    imgElement.style.filter = 'blur(0px)';
+  });
+
+  imgElement.addEventListener('mouseleave', () => {
+    updateImageBlur();
+  });
 
   node.appendChild(imgElement);
 };

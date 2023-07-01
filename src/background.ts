@@ -1,5 +1,8 @@
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === 'complete' && /^https?:\/\/(www\.)?kick\.com(\/|$)/.test(tab?.url ?? '')) {
+  if (
+    changeInfo.status === 'complete' &&
+    /^https?:\/\/(www\.)?kick\.com(\/|$)/.test(tab?.url ?? '')
+  ) {
     chrome.scripting
       .executeScript({
         target: { tabId: tabId },
