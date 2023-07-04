@@ -1,37 +1,44 @@
-import Logo from '../logo/logo';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Icon } from '../ui/icon';
+import { ScrollArea } from '../ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { SETTINGS_TABS } from './tabs/tab-constants';
 
-const SettingsModal = () => (
-  <Dialog>
-    <DialogTrigger className='box-border'>
-      <Logo className='h-7 w-7 p-1' />
-    </DialogTrigger>
-    <DialogContent className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1000]'>
-      <DialogHeader>
-        <DialogTitle>Edit profile</DialogTitle>
-        <DialogDescription>Make changes to your profile here. Click save when you're done.</DialogDescription>
-      </DialogHeader>
-      <div className='grid gap-4 py-4'>
-        <div className='grid grid-cols-4 items-center gap-4'>
-          <p>aha1</p>
+const SettingsModal = () => {
+  return (
+    <Dialog>
+      <DialogTrigger asChild className='cursor-pointer'>
+        <Icon.kickKit className='h-7 w-7 p-1' />
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <Icon.kickKit />
+          <DialogTitle className='pl-3'>KickKit settings</DialogTitle>
+        </DialogHeader>
+        <div className='h-full'>
+          <Tabs defaultValue={SETTINGS_TABS[0].key} orientation='vertical' className='flex flex-row'>
+            <div className='tab-list-container'>
+              <TabsList className='flex flex-col'>
+                {SETTINGS_TABS.map((tab) => (
+                  <TabsTrigger key={`${tab.key}__trigger`} value={tab.key} className='flex w-full justify-start'>
+                    {tab.icon && <div className='mr-4'>{tab.icon}</div>}
+                    {tab.title}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </div>
+            <ScrollArea className='w-full'>
+              {SETTINGS_TABS.map((tab) => (
+                <TabsContent key={`${tab.key}__content`} value={tab.key}>
+                  {tab.content}
+                </TabsContent>
+              ))}
+            </ScrollArea>
+          </Tabs>
         </div>
-        <div className='grid grid-cols-4 items-center gap-4'>
-          <p>aha2</p>
-        </div>
-      </div>
-      <DialogFooter>
-        <p>aha3</p>
-      </DialogFooter>
-    </DialogContent>
-  </Dialog>
-);
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 export default SettingsModal;

@@ -1,18 +1,28 @@
 import { log } from '@/utils/logger';
+import { getSetting } from '../settings/settings-manager';
+import { CHAT_ENTRY_CLASS, KICKKIT_IMAGE_TOKEN } from './image-constants';
 import { isValidImageUrl } from './image-url-parser';
 
 log('Image seeker loaded!');
 
-const KICKKIT_IMAGE_TOKEN = 'kickkit-image' as const;
-const CHAT_ENTRY_CLASS = 'chat-entry' as const;
-
 const injectImage = (node: Element, imageUrl: string) => {
+  const shouldBeBlurred = getSetting('blurImages');
+
   node.classList.add(KICKKIT_IMAGE_TOKEN);
   const imgElement = document.createElement('img');
   imgElement.src = imageUrl;
   imgElement.alt = 'KickKit injected image';
-
   node.appendChild(imgElement);
+
+  if (shouldBeBlurred) {
+    /*
+    ! IMPORTANT: Currently when image is blurred (especially if it's a video) the blur overflows 
+    ! from the image container and causes weird glitches (in Chrome, idk about other browsers).
+    ? TODO: Figure out how to handle the blur differently.
+    */
+
+    imgElement.classList.add('kickkit-blur');
+  }
 };
 
 const getAnchorTags = (node: Element) => {
@@ -25,11 +35,10 @@ const getAnchorTags = (node: Element) => {
         const anchorTag = nestedSpan.querySelector('a');
         if (anchorTag) {
           const potentialImageUrl = anchorTag.href;
-          if (!isValidImageUrl(potentialImageUrl)) {
-            return;
+          if (isValidImageUrl(potentialImageUrl)) {
+            anchorTag.textContent = '';
+            injectImage(anchorTag, potentialImageUrl);
           }
-          anchorTag.textContent = '';
-          injectImage(anchorTag, potentialImageUrl);
         }
       }
     }

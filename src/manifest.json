@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "KickKit",
   "version": "1.0.0",
-  "description": "KickKit, extension for Kick to enhance the experience.",
+  "description": "Extension for Kick to enhance the experience with some utilites.",
   "host_permissions": ["*://*.kick.com/*"],
   "permissions": ["tabs", "activeTab", "scripting", "webNavigation"],
   "background": {
@@ -10,7 +10,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["content_script.js"],
+      "resources": ["content_script.js", "globals.css"],
       "matches": ["https://*.kick.com/*"]
     }
   ],

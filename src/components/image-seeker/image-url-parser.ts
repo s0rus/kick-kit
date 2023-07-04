@@ -1,3 +1,4 @@
+import { getSetting } from '../settings/settings-manager';
 import {
   IMAGE_CONTENT_TYPE,
   MAX_IMAGE_SIZE,
@@ -10,6 +11,10 @@ import {
 
 export const isValidImageUrl = (potentialImageUrl: string) => {
   try {
+    if (!getSetting('seekImages')) {
+      throw new Error();
+    }
+
     const { pathname, hostname, href } = new URL(potentialImageUrl);
     const imageExtension = pathname.substring(pathname.lastIndexOf('.'));
 

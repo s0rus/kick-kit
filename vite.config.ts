@@ -14,6 +14,7 @@ export default defineConfig({
       input: {
         background: 'src/background.ts',
         content_script: 'src/content_script.ts',
+        globals: 'src/styles/globals.css',
       },
       output: {
         assetFileNames: '[name].[ext]',
