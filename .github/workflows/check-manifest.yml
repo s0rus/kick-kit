@@ -16,12 +16,12 @@ jobs:
 
       - name: Check for version change in manifest.json
         run: |
-          FILES_CHANGED=$(git diff --name-only ${{ github.base_ref }}...${{ github.head_ref }})
+          FILES_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }})
 
           if echo "$FILES_CHANGED" | grep -q 'manifest\.json'; then
             CURRENT_VERSION=$(jq -r .version manifest.json)
 
-            if git diff --unified=0 ${{ github.base_ref }}...${{ github.head_ref }} 'manifest.json' | grep -qE "^\+.*\"version\": \"$CURRENT_VERSION\","; then
+            if git diff --unified=0 ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} 'manifest.json' | grep -qE "^\+.*\"version\": \"$CURRENT_VERSION\","; then
               echo "Version line in manifest.json has been changed."
             else
               echo "Version line in manifest.json has not been changed."
