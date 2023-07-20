@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "KickKit",
   "version": "1.0.0",
-  "description": "Extension for Kick to enhance the experience with some utilites.",
+  "description": "Extension for Kick to enhance the experience with some utilities.",
   "host_permissions": ["*://*.kick.com/*"],
   "permissions": ["tabs", "activeTab", "scripting", "webNavigation"],
   "background": {
