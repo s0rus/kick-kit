@@ -15,13 +15,18 @@ const injectImage = (node: Element, imageUrl: string) => {
   node.appendChild(imgElement);
 
   if (shouldBeBlurred) {
-    /*
-    ! IMPORTANT: Currently when image is blurred (especially if it's a video) the blur overflows 
-    ! from the image container and causes weird glitches (in Chrome, idk about other browsers).
-    ? TODO: Figure out how to handle the blur differently.
-    */
+    // * Create a container to hold the image and the blurred overlay
+    const container = document.createElement('div');
+    container.classList.add('kickkit-image-container');
+    node.appendChild(container);
 
-    imgElement.classList.add('kickkit-blur');
+    // * Create the blurred overlay element
+    const blurredOverlay = document.createElement('div');
+    blurredOverlay.classList.add('kickkit-blur-overlay');
+
+    // * Inject image and blurred overlay into the container
+    container.appendChild(blurredOverlay);
+    container.appendChild(imgElement);
   }
 };
 
