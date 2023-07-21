@@ -166,6 +166,10 @@
   @apply relative;
 }
 
-.kickkit-blur {
-  @apply relative filter blur-md hover:filter-none;
+.kickkit-image-container {
+  @apply relative w-fit;
+}
+
+.kickkit-blur-overlay {
+  @apply absolute top-0 left-0 w-full h-full backdrop-blur-lg hover:backdrop-blur-none z-[1];
 }

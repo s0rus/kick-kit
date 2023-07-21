@@ -1,27 +1,35 @@
 import { log } from '@/utils/logger';
 import { getSetting } from '../settings/settings-manager';
-import { CHAT_ENTRY_CLASS, KICKKIT_IMAGE_TOKEN } from './image-constants';
+import {
+  CHAT_ENTRY_CLASS,
+  KICKKIT_BLUR_OVERLAY_TOKEN,
+  KICKKIT_IMAGE_CONTAINER_TOKEN,
+  KICKKIT_IMAGE_TOKEN,
+} from './image-constants';
 import { isValidImageUrl } from './image-url-parser';
 
 log('Image seeker loaded!');
 
-const injectImage = (node: Element, imageUrl: string) => {
+const injectImage = (anchorTag: Element, imageUrl: string) => {
   const shouldBeBlurred = getSetting('blurImages');
 
-  node.classList.add(KICKKIT_IMAGE_TOKEN);
+  anchorTag.classList.add(KICKKIT_IMAGE_TOKEN);
   const imgElement = document.createElement('img');
   imgElement.src = imageUrl;
   imgElement.alt = 'KickKit injected image';
-  node.appendChild(imgElement);
 
   if (shouldBeBlurred) {
-    /*
-    ! IMPORTANT: Currently when image is blurred (especially if it's a video) the blur overflows 
-    ! from the image container and causes weird glitches (in Chrome, idk about other browsers).
-    ? TODO: Figure out how to handle the blur differently.
-    */
+    const imageContainer = document.createElement('div');
+    imageContainer.classList.add(KICKKIT_IMAGE_CONTAINER_TOKEN);
+    anchorTag.appendChild(imageContainer);
 
-    imgElement.classList.add('kickkit-blur');
+    const blurredOverlay = document.createElement('div');
+    blurredOverlay.classList.add(KICKKIT_BLUR_OVERLAY_TOKEN);
+
+    imageContainer.appendChild(blurredOverlay);
+    imageContainer.appendChild(imgElement);
+  } else {
+    anchorTag.appendChild(imgElement);
   }
 };
 
