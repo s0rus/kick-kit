@@ -10,7 +10,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["content_script.js", "globals.css"],
+      "resources": ["content_script.js", "kk_styles.css"],
       "matches": ["https://*.kick.com/*"]
     }
   ],

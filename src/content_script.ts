@@ -9,6 +9,6 @@ initializeSettings();
 
 const link = document.createElement('link');
 link.rel = 'stylesheet';
-link.href = chrome.runtime.getURL('globals.css');
+link.href = chrome.runtime.getURL('kk_styles.css');
 link.id = 'kickkit-styles';
 document.head.appendChild(link);
