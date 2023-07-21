@@ -1,32 +1,35 @@
 import { log } from '@/utils/logger';
 import { getSetting } from '../settings/settings-manager';
-import { CHAT_ENTRY_CLASS, KICKKIT_IMAGE_TOKEN } from './image-constants';
+import {
+  CHAT_ENTRY_CLASS,
+  KICKKIT_BLUR_OVERLAY_TOKEN,
+  KICKKIT_IMAGE_CONTAINER_TOKEN,
+  KICKKIT_IMAGE_TOKEN,
+} from './image-constants';
 import { isValidImageUrl } from './image-url-parser';
 
 log('Image seeker loaded!');
 
-const injectImage = (node: Element, imageUrl: string) => {
+const injectImage = (anchorTag: Element, imageUrl: string) => {
   const shouldBeBlurred = getSetting('blurImages');
 
-  node.classList.add(KICKKIT_IMAGE_TOKEN);
+  anchorTag.classList.add(KICKKIT_IMAGE_TOKEN);
   const imgElement = document.createElement('img');
   imgElement.src = imageUrl;
   imgElement.alt = 'KickKit injected image';
-  node.appendChild(imgElement);
 
   if (shouldBeBlurred) {
-    // * Create a container to hold the image and the blurred overlay
-    const container = document.createElement('div');
-    container.classList.add('kickkit-image-container');
-    node.appendChild(container);
+    const imageContainer = document.createElement('div');
+    imageContainer.classList.add(KICKKIT_IMAGE_CONTAINER_TOKEN);
+    anchorTag.appendChild(imageContainer);
 
-    // * Create the blurred overlay element
     const blurredOverlay = document.createElement('div');
-    blurredOverlay.classList.add('kickkit-blur-overlay');
+    blurredOverlay.classList.add(KICKKIT_BLUR_OVERLAY_TOKEN);
 
-    // * Inject image and blurred overlay into the container
-    container.appendChild(blurredOverlay);
-    container.appendChild(imgElement);
+    imageContainer.appendChild(blurredOverlay);
+    imageContainer.appendChild(imgElement);
+  } else {
+    anchorTag.appendChild(imgElement);
   }
 };
 

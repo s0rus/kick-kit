@@ -157,8 +157,7 @@
 }
 
 .transition-colors {
-  transition-property: color, background-color, border-color,
-    text-decoration-color, fill, stroke;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -167,21 +166,10 @@
   @apply relative;
 }
 
-.kickkit-blur {
-  @apply relative filter blur-md hover:filter-none;
-}
-
 .kickkit-image-container {
-  position: relative;
-  display: flex;
+  @apply relative w-fit;
 }
 
 .kickkit-blur-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backdrop-filter: blur(10px); /* Adjust the blur intensity as needed */
-  z-index: 1; /* Make sure the blur overlay is on top of the image */
+  @apply absolute top-0 left-0 w-full h-full backdrop-blur-lg hover:backdrop-blur-none z-[1];
 }

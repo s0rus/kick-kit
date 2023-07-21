@@ -20,5 +20,6 @@ export const RESPONSE_HEADERS = {
 export const IMAGE_CONTENT_TYPE = 'image/' as const;
 
 export const KICKKIT_IMAGE_TOKEN = 'kickkit-token' as const;
-export const KICKKIT_BLUR_TOKEN = 'kickkit-blur' as const;
+export const KICKKIT_IMAGE_CONTAINER_TOKEN = 'kickkit-image-container' as const;
+export const KICKKIT_BLUR_OVERLAY_TOKEN = 'kickkit-blur-overlay' as const;
 export const CHAT_ENTRY_CLASS = 'chat-entry' as const;
