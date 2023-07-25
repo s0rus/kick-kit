@@ -36,11 +36,3 @@ export const seekAnchorToImage = (anchorTag: HTMLAnchorElement, potentialImageUr
   anchorTag.textContent = '';
   injectImage(anchorTag, potentialImageUrl);
 };
-
-document.body.querySelectorAll(`.${KICKKIT_SEEKED_TOKEN}`).forEach((node) => {
-  const anchorTag = node as HTMLAnchorElement;
-  const potentialImageUrl = anchorTag.href;
-  seekAnchorToImage(anchorTag, potentialImageUrl);
-});
-
-export default {};

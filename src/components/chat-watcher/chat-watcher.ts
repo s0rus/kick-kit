@@ -1,5 +1,5 @@
-import { seekAnchorToImage } from '..';
-import { CHAT_ENTRY_CLASS } from './chat-constants';
+import { seekAnchorToImage } from '../image-seeker/image-seeker';
+import { CHAT_ENTRY_CLASS, KICKKIT_SEEKED_TOKEN } from './chat-constants';
 
 const parseAnchorTags = (node: Element) => {
   const childElements = [...node.children];
@@ -41,5 +41,11 @@ const observer = new MutationObserver((mutationsList) => {
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
+
+document.body.querySelectorAll(`.${KICKKIT_SEEKED_TOKEN}`).forEach((node) => {
+  const anchorTag = node as HTMLAnchorElement;
+  const potentialImageUrl = anchorTag.href;
+  seekAnchorToImage(anchorTag, potentialImageUrl);
+});
 
 export default {};
