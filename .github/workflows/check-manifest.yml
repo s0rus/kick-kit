@@ -1,36 +1,47 @@
-name: Check Manifest Version Change
+name: Build and Package Vite Application
 
 on:
-  pull_request_target:
-    types:
-      - opened
-      - synchronize
-
+  push:
 jobs:
-  check_changes:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0
+          node-version: 16.18.0
 
-      - name: Check for version change in manifest.json
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build Vite application
+        run: pnpm run build-extension
+
+      - name: Extract version from manifest.json
+        id: get_version
         run: |
-          FILES_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }})
+          version=$(node -p "require('./src/manifest.json').version")
+          echo "::set-output name=version::${version}"
 
-          if echo "$FILES_CHANGED" | grep -q 'src/manifest\.json'; then
-            CURRENT_VERSION=$(jq -r .version src/manifest.json)
+      - name: Generate random artifact ID
+        id: generate_artifact_id
+        run: echo "::set-output name=artifact_id::$(openssl rand -hex 4)"
 
-            if git diff --unified=0 ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} 'src/manifest.json' | grep -qE "^\+.*\"version\": \"$CURRENT_VERSION\","; then
-              echo "Version line in src/manifest.json has been changed."
-            else
-              echo "Version line in src/manifest.json has not been changed."
-              exit 1
-            fi
-          else
-            echo "src/manifest.json has not been changed."
-            exit 1
-          fi
+      - name: Rename dist folder to version name
+        run: |
+          version="${{ steps.get_version.outputs.version }}"
+          artifact_id="${{ steps.generate_artifact_id.outputs.artifact_id }}"
+          mv dist "kickkit_${version}_${artifact_id}"
+
+      - name: Create artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: kickkit_${{ steps.get_version.outputs.version }}_${{ steps.generate_artifact_id.outputs.artifact_id }}
+          path: kickkit_${{ steps.get_version.outputs.version }}_${{ steps.generate_artifact_id.outputs.artifact_id }}
