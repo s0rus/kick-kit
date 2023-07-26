@@ -1,4 +1,5 @@
 import { seekAnchorToImage } from '../image-seeker/image-seeker';
+import { seekAnchorToTitledLinks } from '../link-seeker/link-seeker';
 import { CHAT_ENTRY_CLASS, KICKKIT_SEEKED_TOKEN } from './chat-constants';
 
 const parseAnchorTags = (node: Element) => {
@@ -11,7 +12,8 @@ const parseAnchorTags = (node: Element) => {
         const anchorTag = nestedSpan.querySelector('a');
         if (anchorTag) {
           const anchorTagUrl = anchorTag.href;
-          seekAnchorToImage(anchorTag, anchorTagUrl);
+          // seekAnchorToImage(anchorTag, anchorTagUrl);
+          seekAnchorToTitledLinks(anchorTag, anchorTagUrl);
         }
       }
     }

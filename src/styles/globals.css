@@ -2,6 +2,7 @@
 @import './dialog.css';
 @import './tabs.css';
 @import './switch.css';
+@import './hover-card.css';
 
 :root {
   --background: 0 0% 100%;

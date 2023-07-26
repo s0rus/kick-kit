@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import { MAIN_NAVBAR_TOKEN, SETTINGS_MODAL_ID } from './settings-constants';
 import SettingsModal from './settings-modal';
 
@@ -8,7 +8,7 @@ settingsModalElement.id = SETTINGS_MODAL_ID;
 settingsModalElement.classList.add('h-7');
 
 const renderSettingsModal = () => {
-  ReactDOM.createRoot(settingsModalElement).render(
+  createRoot(settingsModalElement).render(
     <React.StrictMode>
       <SettingsModal />
     </React.StrictMode>
