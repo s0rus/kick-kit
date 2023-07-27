@@ -2,8 +2,8 @@
     <picture>
       <img src="public/icons/icon128.png" height="128">
     </picture>
-    <h1 align="center">KickKit web extension</h1>
-    <h2 align="center">Enhance the experience on <a href="https://kick.com">kick.com</a></h2>
+    <h1 align="center"><a href="https://kickkit.devsor.us">KickKit</a> web extension</h1>
+    <p align="center" style="font-size: 20px;">Enhance the experience on <a href="https://kick.com">kick.com</a></p>
 </p>
 
 ## Local development:
