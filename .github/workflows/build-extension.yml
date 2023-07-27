@@ -1,4 +1,4 @@
-name: Build extension
+name: Build app artifact
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 16.18.0
+          node-version: 16
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build extension
+      - name: Build Vite application
         run: pnpm run build-extension
 
       - name: Extract version from manifest.json
@@ -39,12 +39,12 @@ jobs:
 
       - name: Rename dist folder to version name
         run: |
-          version="${{ steps.get_version.outputs.version }}"
+          version="${{ env.version }}"
           artifact_id="${{ steps.generate_artifact_id.outputs.artifact_id }}"
           mv dist "kickkit_${version}_${artifact_id}"
 
       - name: Create artifact
         uses: actions/upload-artifact@v2
         with:
-          name: kickkit_${{ steps.get_version.outputs.version }}_${{ steps.generate_artifact_id.outputs.artifact_id }}
-          path: kickkit_${{ steps.get_version.outputs.version }}_${{ steps.generate_artifact_id.outputs.artifact_id }}
+          name: kickkit_${{ env.version }}_${{ steps.generate_artifact_id.outputs.artifact_id }}
+          path: kickkit_${{ env.version }}_${{ steps.generate_artifact_id.outputs.artifact_id }}
