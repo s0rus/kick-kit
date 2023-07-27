@@ -1,67 +1,38 @@
-import { log } from '../utils/logger';
+import { log } from '@/utils/logger';
+import { KICKKIT_SEEKED_TOKEN } from '../chat-watcher/chat-constants';
+import { getSetting } from '../settings/settings-manager';
+import { KICKKIT_BLUR_OVERLAY_TOKEN, KICKKIT_IMAGE_CONTAINER_TOKEN } from './image-constants';
+import { isValidImageUrl } from './image-url-parser';
 
 log('Image seeker loaded!');
 
-const KICKKIT_IMAGE_TOKEN = 'kickkit-image' as const;
-const CHAT_ENTRY_CLASS = 'chat-entry' as const;
+const injectImage = (anchorTag: HTMLAnchorElement, imageUrl: string) => {
+  const shouldBeBlurred = getSetting('blurImages');
 
-const injectImage = (node: Element, imageUrl: string) => {
-  node.classList.add(KICKKIT_IMAGE_TOKEN);
+  anchorTag.classList.add(KICKKIT_SEEKED_TOKEN);
   const imgElement = document.createElement('img');
   imgElement.src = imageUrl;
   imgElement.alt = 'KickKit injected image';
 
-  console.log(node);
-  node.appendChild(imgElement);
-};
+  if (shouldBeBlurred) {
+    const imageContainer = document.createElement('div');
+    imageContainer.classList.add(KICKKIT_IMAGE_CONTAINER_TOKEN);
+    anchorTag.appendChild(imageContainer);
 
-const getAnchorTags = (node: Element) => {
-  const childElements = [...node.children];
+    const blurredOverlay = document.createElement('div');
+    blurredOverlay.classList.add(KICKKIT_BLUR_OVERLAY_TOKEN);
 
-  for (const childElement of childElements) {
-    if (childElement.tagName.toLowerCase() === 'span') {
-      const nestedSpan = childElement.querySelector('span');
-      if (nestedSpan) {
-        const anchorTag = nestedSpan.querySelector('a');
-        if (anchorTag) {
-          // ! TODO: Validate the image href
-          const potentialImageUrl = anchorTag.href;
-          anchorTag.textContent = '';
-          injectImage(anchorTag, potentialImageUrl);
-        }
-      }
-    }
+    imageContainer.appendChild(blurredOverlay);
+    imageContainer.appendChild(imgElement);
+  } else {
+    anchorTag.appendChild(imgElement);
   }
 };
 
-const searchForChatEntries = (node: Node) => {
-  if (node instanceof Element && node.classList.contains(CHAT_ENTRY_CLASS)) {
-    getAnchorTags(node.children[0]);
+export const seekAnchorToImage = (anchorTag: HTMLAnchorElement, potentialImageUrl: string) => {
+  if (!isValidImageUrl(potentialImageUrl)) {
+    return;
   }
-
-  // ? TODO: Find out if there is a better way to look for the chat entry nodes
-  // ? instead of using recursion.
-  node.childNodes.forEach((childNode) => {
-    searchForChatEntries(childNode);
-  });
+  anchorTag.textContent = '';
+  injectImage(anchorTag, potentialImageUrl);
 };
-
-document.body.querySelectorAll(`.${KICKKIT_IMAGE_TOKEN}`).forEach((node) => {
-  // ! TODO: Validate the image href
-  const potentialImageUrl = (node as HTMLAnchorElement).href;
-  injectImage(node, potentialImageUrl);
-});
-
-const observer = new MutationObserver((mutationsList) => {
-  for (const mutation of mutationsList) {
-    if (mutation.type === 'childList') {
-      for (const addedNode of mutation.addedNodes) {
-        searchForChatEntries(addedNode);
-      }
-    }
-  }
-});
-
-observer.observe(document.body, { childList: true, subtree: true });
-
-export default {};

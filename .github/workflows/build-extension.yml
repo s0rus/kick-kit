@@ -1,0 +1,48 @@
+name: Build extension
+
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.18.0
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build extension
+        run: pnpm run build-extension
+
+      - name: Get version from manifest.json
+        id: get_version
+        run: echo "::set-output name=version::$(node -e \"console.log(require('./src/manifest.json').version)\")"
+
+      - name: Generate random artifact ID
+        id: generate_artifact_id
+        run: echo "::set-output name=artifact_id::$(openssl rand -hex 4)"
+
+      - name: Rename dist folder to version name
+        run: |
+          version="${{ steps.get_version.outputs.version }}"
+          artifact_id="${{ steps.generate_artifact_id.outputs.artifact_id }}"
+          mv dist "kickkit_${version}_${artifact_id}"
+
+      - name: Create artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: kickkit_${{ steps.get_version.outputs.version }}_${{ steps.generate_artifact_id.outputs.artifact_id }}
+          path: kickkit_${{ steps.get_version.outputs.version }}_${{ steps.generate_artifact_id.outputs.artifact_id }}

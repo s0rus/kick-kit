@@ -1,1 +1,2 @@
-export { default } from './image-seeker/image-seeker';
+export * from './chat-watcher/chat-watcher';
+export * from './settings/';
