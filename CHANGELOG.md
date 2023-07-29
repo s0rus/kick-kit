@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Changed settings-manager to be more bullet proof
+- Changed file structure and naming for a better DX
 
 ## [1.0.0] - 2023-07-20
 
