@@ -1,4 +1,5 @@
 import { seekAnchorToImage } from '../image-seeker/image-seeker';
+import { seekAnchorToVideoCards } from '../video-seeker/video-seeker';
 import { CHAT_ENTRY_CLASS, KICKKIT_SEEKED_TOKEN } from './chat-constants';
 
 const parseAnchorTags = (node: Element) => {
@@ -12,7 +13,7 @@ const parseAnchorTags = (node: Element) => {
         if (anchorTag) {
           const anchorTagUrl = anchorTag.href;
           seekAnchorToImage(anchorTag, anchorTagUrl);
-          // seekAnchorToTitledLinks(anchorTag, anchorTagUrl);
+          seekAnchorToVideoCards(anchorTag, anchorTagUrl);
         }
       }
     }

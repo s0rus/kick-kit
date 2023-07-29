@@ -16,6 +16,11 @@ const ChatTab = () => {
           subtitle: 'Hover over image to reveal it (useful for streamers)',
         }}
       />
+      <SettingsOption
+        settingKey='seekVideos'
+        title='Display streamable/youtube videos'
+        subtitle='Display basic information about videos in the chat'
+      />
     </div>
   );
 };

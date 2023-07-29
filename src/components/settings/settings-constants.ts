@@ -13,6 +13,7 @@ export const SETTINGS_STORAGE_TOKEN = '__kickkit-settings__' as const;
 export const DEFAULT_SETTINGS = {
   seekImages: true,
   blurImages: false,
+  seekVideos: true,
 };
 
 export type KKSettings = typeof DEFAULT_SETTINGS;
