@@ -1,3 +1,4 @@
+import { toggleTopGifters } from '@/components';
 import SettingsOption from '@/components/ui/settings-option';
 
 const ChatTab = () => {
@@ -20,6 +21,15 @@ const ChatTab = () => {
         settingKey='seekVideos'
         title='Display streamable/youtube videos'
         subtitle='Display basic information about videos in the chat'
+        separator={{
+          bottom: true,
+        }}
+      />
+      <SettingsOption
+        settingKey='hideTopGifters'
+        title='Hide top gifters'
+        subtitle='Hide top gifters from top of the chat'
+        toggleCallback={toggleTopGifters}
       />
     </div>
   );

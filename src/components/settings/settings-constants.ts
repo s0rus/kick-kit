@@ -14,6 +14,7 @@ export const DEFAULT_SETTINGS = {
   seekImages: true,
   blurImages: false,
   seekVideos: true,
+  hideTopGifters: false,
 };
 
 export type KKSettings = typeof DEFAULT_SETTINGS;

@@ -14,18 +14,28 @@ interface SettingsOptionBase extends SwitchProps {
 
 interface SettingsOptionProps extends SettingsOptionBase {
   subOption?: SettingsOptionBase;
+  toggleCallback?: () => void;
   separator?: {
     top?: boolean;
     bottom?: boolean;
   };
 }
 
-const SettingsOption = ({ title, subtitle, settingKey, separator, subOption, ...rest }: SettingsOptionProps) => {
+const SettingsOption = ({
+  title,
+  subtitle,
+  settingKey,
+  separator,
+  subOption,
+  toggleCallback,
+  ...rest
+}: SettingsOptionProps) => {
   const [isEnabled, setIsEnabled] = useState<boolean>(getSetting(settingKey));
 
   const toggleOption = () => {
     setSetting(settingKey, !isEnabled);
     setIsEnabled(!isEnabled);
+    toggleCallback && toggleCallback();
   };
 
   return (
