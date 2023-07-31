@@ -2,9 +2,9 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { getSetting } from '../settings/settings-manager';
 import VideoCard from './video-card';
-import { CertainVideoInfo, extractVideoInfo } from './video-url-parser';
+import { VideoInfo, extractVideoInfo } from './video-url-parser';
 
-const injectVideoCard = (anchorTag: HTMLAnchorElement, videoInfo: CertainVideoInfo) => {
+const injectVideoCard = (anchorTag: HTMLAnchorElement, videoInfo: NonNullable<VideoInfo>) => {
   const anchorTagParent = anchorTag.parentElement;
   anchorTagParent?.childNodes[1].remove();
 

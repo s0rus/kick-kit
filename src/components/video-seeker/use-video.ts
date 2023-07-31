@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { NOEMBED_PROVIDER, VideoMeta } from './video-constants';
-import { CertainVideoInfo } from './video-url-parser';
+import { NOEMBED_PROVIDER, VideoMeta, VideoMetaError } from './video-constants';
+import { VideoInfo } from './video-url-parser';
 
-const fetchVideoMeta = (videoInfo: CertainVideoInfo) => {
-  return new Promise<VideoMeta | null>((resolve, reject) => {
+const fetchVideoMeta = (videoInfo: NonNullable<VideoInfo>) => {
+  return new Promise<VideoMeta | VideoMetaError | null>((resolve, reject) => {
     const url = `${NOEMBED_PROVIDER[videoInfo.provider].url}${videoInfo.videoId}`;
     const xhr = new XMLHttpRequest();
 
@@ -25,10 +25,10 @@ const fetchVideoMeta = (videoInfo: CertainVideoInfo) => {
   });
 };
 
-export const useVideo = (videoInfo: CertainVideoInfo) => {
+export const useVideo = (videoInfo: NonNullable<VideoInfo>) => {
   const [data, setData] = useState<VideoMeta | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<VideoMetaError | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,10 +37,18 @@ export const useVideo = (videoInfo: CertainVideoInfo) => {
 
       try {
         const response = await fetchVideoMeta(videoInfo);
+        if (response && 'error' in response && 'url' in response) {
+          // ! Noembed returns 200 instead of 404 status code when the link is wrong,
+          // ! so we have to check and throw for it manually.
+          throw {
+            error: response.error,
+            url: response.url,
+          };
+        }
         setData(response);
       } catch (err) {
-        const error = err as Error;
-        setError(error.message);
+        const error = err as VideoMetaError;
+        setError(error);
       } finally {
         setIsLoading(false);
       }

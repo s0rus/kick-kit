@@ -1,6 +1,6 @@
 import { NOEMBED_PROVIDER, NoembedProvider } from './video-constants';
 
-export const extractVideoInfo = (potentialVideoUrl: string) => {
+export const extractVideoInfo = (potentialVideoUrl: string): VideoInfo | null => {
   let match: RegExpExecArray | null = null;
 
   for (const [providerName, provider] of Object.entries(NOEMBED_PROVIDER)) {
@@ -17,5 +17,7 @@ export const extractVideoInfo = (potentialVideoUrl: string) => {
   return null;
 };
 
-export type VideoInfo = ReturnType<typeof extractVideoInfo>;
-export type CertainVideoInfo = NonNullable<VideoInfo>;
+export type VideoInfo = {
+  videoId: string;
+  provider: NoembedProvider;
+};

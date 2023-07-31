@@ -36,3 +36,8 @@ export type VideoMeta = {
   version: string;
   url: string;
 };
+
+export type VideoMetaError = {
+  error: string;
+  url: string;
+};

@@ -1,10 +1,17 @@
-import { BadgeInfo, MessageSquare, type Icon as LucideIcon, type LucideProps } from 'lucide-react';
+import {
+  BadgeInfoIcon,
+  ImageOffIcon,
+  MessageSquareIcon,
+  type Icon as LucideIcon,
+  type LucideProps,
+} from 'lucide-react';
 
 export type Icon = LucideIcon;
 
 export const Icon = {
-  messageSquare: MessageSquare,
-  badgeInfo: BadgeInfo,
+  messageSquare: MessageSquareIcon,
+  badgeInfo: BadgeInfoIcon,
+  imageOff: ImageOffIcon,
   kickKit: (props: LucideProps) => (
     <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' {...props}>
       <path d='M0.5 0.585714H7.91304V23.75H0.5V0.585714Z' fill='currentColor' />
