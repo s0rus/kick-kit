@@ -8,7 +8,10 @@ export const toggleTopGifters = () => {
     if (container) {
       getElement(container, '.z-20').then((element) => {
         if (element) {
-          shouldBeHidden ? element.classList.remove('lg:block') : element.classList.add('lg:block');
+          const isVisible = element.classList.contains('lg:block');
+          shouldBeHidden
+            ? isVisible && element.classList.remove('lg:block')
+            : !isVisible && element.classList.add('lg:block');
         }
       });
     }

@@ -1,4 +1,4 @@
-import { toggleTopGifters } from '@/components';
+import { toggleEmoteHolder, toggleTopGifters } from '@/components';
 import SettingsOption from '@/components/ui/settings-option';
 
 const ChatTab = () => {
@@ -30,6 +30,12 @@ const ChatTab = () => {
         title='Hide top gifters'
         subtitle='Hide top gifters from top of the chat'
         toggleCallback={toggleTopGifters}
+      />
+      <SettingsOption
+        settingKey='hideEmoteHolder'
+        title='Hide emote holder'
+        subtitle='Hide emote holder from top of the chat input'
+        toggleCallback={toggleEmoteHolder}
       />
     </div>
   );

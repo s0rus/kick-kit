@@ -1,6 +1,7 @@
-import { seekAnchorToImage } from '../image-seeker/image-seeker';
-import { seekAnchorToVideoCards } from '../video-seeker/video-seeker';
-import { CHAT_ENTRY_CLASS, KICKKIT_SEEKED_TOKEN } from './chat-constants';
+import { toggleEmoteHolder, toggleTopGifters } from '@/components/element-hider/';
+import { seekAnchorToImage } from '@/components/image-seeker/image-seeker';
+import { seekAnchorToVideoCards } from '@/components/video-seeker/video-seeker';
+import { CHAT_ENTRY_CLASS } from './chat-constants';
 
 const parseAnchorTags = (node: Element) => {
   const childElements = [...node.children];
@@ -38,16 +39,13 @@ const observer = new MutationObserver((mutationsList) => {
       for (const addedNode of mutation.addedNodes) {
         searchForChatEntries(addedNode);
       }
+
+      toggleTopGifters();
+      toggleEmoteHolder();
     }
   }
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
-
-document.body.querySelectorAll(`.${KICKKIT_SEEKED_TOKEN}`).forEach((node) => {
-  const anchorTag = node as HTMLAnchorElement;
-  const potentialImageUrl = anchorTag.href;
-  seekAnchorToImage(anchorTag, potentialImageUrl);
-});
 
 export default {};

@@ -3,6 +3,12 @@ import { getSetting } from '../settings/settings-manager';
 import { KICKKIT_BLUR_OVERLAY_TOKEN, KICKKIT_IMAGE_CONTAINER_TOKEN } from './image-constants';
 import { isValidImageUrl } from './image-url-parser';
 
+document.body.querySelectorAll(`.${KICKKIT_SEEKED_TOKEN}`).forEach((node) => {
+  const anchorTag = node as HTMLAnchorElement;
+  const potentialImageUrl = anchorTag.href;
+  seekAnchorToImage(anchorTag, potentialImageUrl);
+});
+
 const injectImage = (anchorTag: HTMLAnchorElement, imageUrl: string) => {
   const shouldBeBlurred = getSetting('blurImages');
 

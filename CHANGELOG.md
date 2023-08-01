@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added 'display videos' which gives basic info about linked video (from streamable/youtube) directly in the chat
 - Added option to hide 'top gifters' from the chat
+- Added option to hide 'quick emote holder' from the chat
 - Added generic function for grabbing elements from the page
 
 ### Changed

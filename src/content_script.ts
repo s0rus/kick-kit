@@ -12,4 +12,3 @@ link.rel = 'stylesheet';
 link.href = chrome.runtime.getURL('kk_styles.css');
 link.id = 'kickkit-styles';
 document.head.appendChild(link);
-
