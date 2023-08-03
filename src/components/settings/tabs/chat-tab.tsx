@@ -1,3 +1,4 @@
+import { toggleEmoteHolder, toggleTopGifters } from '@/components';
 import SettingsOption from '@/components/ui/settings-option';
 
 const ChatTab = () => {
@@ -15,6 +16,26 @@ const ChatTab = () => {
           title: 'Blur images',
           subtitle: 'Hover over image to reveal it (useful for streamers)',
         }}
+      />
+      <SettingsOption
+        settingKey='seekVideos'
+        title='Display streamable/youtube videos'
+        subtitle='Display basic information about videos in the chat'
+        separator={{
+          bottom: true,
+        }}
+      />
+      <SettingsOption
+        settingKey='hideTopGifters'
+        title='Hide top gifters'
+        subtitle='Hide top gifters from top of the chat'
+        toggleCallback={toggleTopGifters}
+      />
+      <SettingsOption
+        settingKey='hideEmoteHolder'
+        title='Hide emote holder'
+        subtitle='Hide emote holder from top of the chat input'
+        toggleCallback={toggleEmoteHolder}
       />
     </div>
   );

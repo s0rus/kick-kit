@@ -26,7 +26,13 @@ export const getAllSettings = (): KKSettings => {
 
 export const getSetting = <T extends KKSettingKey>(key: T): KKSettings[T] => {
   const settings = getAllSettings();
-  return settings[key];
+  const setting = settings[key];
+  if (typeof setting === 'undefined') {
+    setSetting(key, DEFAULT_SETTINGS[key]);
+    return DEFAULT_SETTINGS[key];
+  } else {
+    return setting;
+  }
 };
 
 export const setSetting = <T extends KKSettingKey>(key: T, value: KKSettings[T]) => {

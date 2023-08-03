@@ -1,0 +1,3 @@
+.skeleton {
+  @apply animate-pulse bg-muted/20 min-h-[14px];
+}

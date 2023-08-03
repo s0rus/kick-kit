@@ -1,0 +1,27 @@
+.card {
+  @apply rounded-lg bg-card text-card-foreground shadow-sm hover:bg-card/80;
+}
+
+.card-header {
+  @apply flex flex-col space-y-1.5 p-6;
+}
+
+.card-title {
+  @apply font-semibold leading-none tracking-tight;
+}
+
+.card-desc {
+  @apply text-xs text-muted-foreground/40;
+}
+
+.card-image {
+  @apply object-cover object-center max-h-16 max-w-[80px];
+}
+
+.card-content {
+  @apply p-1.5;
+}
+
+.card-footer {
+  @apply flex items-center p-6 pt-0;
+}
