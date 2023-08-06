@@ -3,6 +3,7 @@ import { Icon } from '../ui/icon';
 import { Skeleton } from '../ui/skeleton';
 import { useVideo } from './use-video';
 import { VideoInfo } from './video-url-parser';
+import { getSetting } from '../settings/settings-manager';
 
 interface VideoCardProps {
   videoInfo: NonNullable<VideoInfo>;
@@ -10,6 +11,7 @@ interface VideoCardProps {
 
 const VideoCard = ({ videoInfo }: VideoCardProps) => {
   const { data, error, isLoading } = useVideo(videoInfo);
+  const shouldBeBlurred = getSetting('blurImages');
 
   if (error) {
     return <span className='underline'>{error.url}</span>;
@@ -18,11 +20,17 @@ const VideoCard = ({ videoInfo }: VideoCardProps) => {
   return (
     <Card>
       <CardContent className='flex flex-row items-center'>
-        <div className='aspect-video w-[80px] max-h-16 flex-shrink-0 mr-2 bg-black flex items-center justify-center'>
+        <div className='aspect-video w-[80px] max-h-16 flex-shrink-0 mr-2 bg-black flex items-center justify-center relative'>
           {isLoading ? (
             <Skeleton className='card-image w-full h-full' />
           ) : data?.thumbnail_url ? (
-            <img src={data?.thumbnail_url} className='card-image' />
+            <>
+              <img
+                src={data?.thumbnail_url}
+                style={{ filter: shouldBeBlurred ? 'blur(8px)' : 'blur(0px)' }}
+                className='card-image'
+              />
+            </>
           ) : (
             <Icon.imageOff />
           )}
@@ -39,7 +47,10 @@ const VideoCard = ({ videoInfo }: VideoCardProps) => {
             <Skeleton className='w-full rounded-lg' />
           ) : (
             <CardDescription>
-              via {!data?.provider_name.length || !data?.provider_name ? 'Unknown provider' : data?.provider_name}
+              via{' '}
+              {!data?.provider_name.length || !data?.provider_name
+                ? 'Unknown provider'
+                : data?.provider_name}
             </CardDescription>
           )}
         </div>
