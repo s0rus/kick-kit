@@ -46,9 +46,6 @@ waitForElement<HTMLDivElement>({
           for (const addedNode of mutation.addedNodes) {
             searchForChatEntries(addedNode);
           }
-
-          // toggleTopGifters();
-          // toggleEmoteHolder();
         }
       }
     });
