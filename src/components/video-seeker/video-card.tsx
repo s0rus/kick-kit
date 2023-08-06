@@ -32,14 +32,14 @@ const VideoCard = ({ videoInfo }: VideoCardProps) => {
             <Skeleton className='w-full mb-1 rounded-lg' />
           ) : (
             <CardTitle className='text-sm max-h-full line-clamp-2 font-semibold'>
-              {data?.title ?? 'Unknown'}
+              {data?.title.length ? data?.title ?? 'Unknown' : 'Untitled'}
             </CardTitle>
           )}
           {isLoading ? (
             <Skeleton className='w-full rounded-lg' />
           ) : (
             <CardDescription>
-              via {data?.provider_name ?? 'Unknown'}
+              via {!data?.provider_name.length || !data?.provider_name ? 'Unknown provider' : data?.provider_name}
             </CardDescription>
           )}
         </div>

@@ -1,10 +1,10 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
+import { injectReactElement } from '@/utils/injectReactElement';
+import { scrollChatToBottom } from '../chat-watcher/chat-scroller';
 import { getSetting } from '../settings/settings-manager';
 import VideoCard from './video-card';
 import { VideoInfo, extractVideoInfo } from './video-url-parser';
 
-const injectVideoCard = (anchorTag: HTMLAnchorElement, videoInfo: NonNullable<VideoInfo>) => {
+const injectVideoCard = async (anchorTag: HTMLAnchorElement, videoInfo: NonNullable<VideoInfo>) => {
   const anchorTagParent = anchorTag.parentElement;
   anchorTagParent?.childNodes[1].remove();
 
@@ -14,18 +14,21 @@ const injectVideoCard = (anchorTag: HTMLAnchorElement, videoInfo: NonNullable<Vi
   }, {});
 
   if (anchorTagParent) {
-    createRoot(anchorTagParent).render(
-      <React.StrictMode>
-        &nbsp;
+    injectReactElement({
+      mode: 'insert',
+      rootContainer: anchorTagParent,
+      reactCompontent: (
         <a {...anchorAttributes} className='important-no-underline'>
           <VideoCard videoInfo={videoInfo} />
         </a>
-      </React.StrictMode>
-    );
+      ),
+    });
+
+    await scrollChatToBottom({ bypassPause: false });
   }
 };
 
-export const seekAnchorToVideoCards = (anchorTag: HTMLAnchorElement, potentialLinkUrl: string) => {
+export const seekAnchorToVideoCards = async (anchorTag: HTMLAnchorElement, potentialLinkUrl: string) => {
   if (!getSetting('seekVideos')) {
     return;
   }
@@ -35,5 +38,5 @@ export const seekAnchorToVideoCards = (anchorTag: HTMLAnchorElement, potentialLi
     return;
   }
 
-  injectVideoCard(anchorTag, videoInfo);
+  await injectVideoCard(anchorTag, videoInfo);
 };

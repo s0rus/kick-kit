@@ -4,7 +4,7 @@
   "version": "1.1.1",
   "description": "Extension for Kick to enhance the experience with some utilities.",
   "host_permissions": ["*://*.kick.com/*"],
-  "permissions": ["tabs", "scripting"],
+  "permissions": ["scripting"],
   "background": {
     "service_worker": "background.js"
   },

@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2023-08-06
+
+### Fixed
+
+- Fixed a bug where the chat would pause when injected video/image appeared in the chat
+- Fixed a bug where chat wouldn't be scrolled to the bottom initially when there were injected videos/images in the chat
+
+### Changed
+
+- Changed youtube link regex to include `t=<number>s` parameter to allow embedding of videos with specific start time
+- Changed size of the video thumbnail to reduce black bars
+
 ## [1.1.0] - 2023-07-29
 
 ### Added

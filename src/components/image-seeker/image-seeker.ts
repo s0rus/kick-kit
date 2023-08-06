@@ -1,15 +1,27 @@
+import { appendChildAsync } from '@/utils/appendChildAsync';
 import { KICKKIT_SEEKED_TOKEN } from '../chat-watcher/chat-constants';
+import { scrollChatToBottom } from '../chat-watcher/chat-scroller';
 import { getSetting } from '../settings/settings-manager';
 import { KICKKIT_BLUR_OVERLAY_TOKEN, KICKKIT_IMAGE_CONTAINER_TOKEN } from './image-constants';
 import { isValidImageUrl } from './image-url-parser';
 
+interface AnchorToImageProps {
+  anchorTag: HTMLAnchorElement;
+  imageUrl: string;
+  bypassPause?: boolean;
+}
+
 document.body.querySelectorAll(`.${KICKKIT_SEEKED_TOKEN}`).forEach((node) => {
   const anchorTag = node as HTMLAnchorElement;
   const potentialImageUrl = anchorTag.href;
-  seekAnchorToImage(anchorTag, potentialImageUrl);
+  seekAnchorToImage({
+    anchorTag,
+    imageUrl: potentialImageUrl,
+    bypassPause: true,
+  });
 });
 
-const injectImage = (anchorTag: HTMLAnchorElement, imageUrl: string) => {
+const injectImage = async ({ anchorTag, imageUrl, bypassPause }: AnchorToImageProps) => {
   const shouldBeBlurred = getSetting('blurImages');
 
   anchorTag.classList.add(KICKKIT_SEEKED_TOKEN);
@@ -26,16 +38,22 @@ const injectImage = (anchorTag: HTMLAnchorElement, imageUrl: string) => {
     blurredOverlay.classList.add(KICKKIT_BLUR_OVERLAY_TOKEN);
 
     imageContainer.appendChild(blurredOverlay);
-    imageContainer.appendChild(imgElement);
+    await appendChildAsync(imageContainer, imgElement);
   } else {
-    anchorTag.appendChild(imgElement);
+    await appendChildAsync(anchorTag, imgElement);
   }
+
+  await scrollChatToBottom({ bypassPause });
 };
 
-export const seekAnchorToImage = (anchorTag: HTMLAnchorElement, potentialImageUrl: string) => {
-  if (!isValidImageUrl(potentialImageUrl)) {
+export const seekAnchorToImage = async ({ anchorTag, imageUrl, bypassPause }: AnchorToImageProps) => {
+  if (!isValidImageUrl(imageUrl)) {
     return;
   }
   anchorTag.textContent = '';
-  injectImage(anchorTag, potentialImageUrl);
+  await injectImage({
+    anchorTag,
+    imageUrl,
+    bypassPause,
+  });
 };

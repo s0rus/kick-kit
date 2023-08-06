@@ -14,11 +14,11 @@ export const NOEMBED_PROVIDER = {
   },
   youtube: {
     url: NOEMBED_YOUTUBE_URL,
-    regex: /^(https?:\/\/)?(www\.)?youtube\.com\/watch\?v=([\w-]+)$/i,
+    regex: /^(https?:\/\/)?(www\.)?youtube\.com\/watch\?v=([\w-]+)(&t=\d+s)?$/i,
   },
   youtube_short: {
     url: NOEMBED_YOUTUBE_SHORT_URL,
-    regex: /^(https?:\/\/)?(www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})$/i,
+    regex: /^(https?:\/\/)?(www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})(\?t=\d+s)?$/i,
   },
 } as const;
 
