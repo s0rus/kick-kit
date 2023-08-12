@@ -18,7 +18,7 @@ export const NOEMBED_PROVIDER = {
   },
   youtube_short: {
     url: NOEMBED_YOUTUBE_SHORT_URL,
-    regex: /^(https?:\/\/)?(www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})(\?t=\d+s)?$/i,
+    regex: /^(https?:\/\/)?(www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})(\?t=\d+s?)?$/i,
   },
 } as const;
 
