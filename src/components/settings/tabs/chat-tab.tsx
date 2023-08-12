@@ -1,3 +1,4 @@
+import { initEvent } from '@/components/events/event-constants';
 import SettingsOption from '@/components/ui/settings-option';
 
 const ChatTab = () => {
@@ -28,13 +29,13 @@ const ChatTab = () => {
         settingKey='hideTopGifters'
         title='Hide top gifters'
         subtitle='Hide top gifters from top of the chat'
-        toggleCallback={() => chrome.runtime.sendMessage('initToggleTopGifters')}
+        toggleCallback={() => initEvent('initToggleTopGifters')}
       />
       <SettingsOption
         settingKey='hideEmoteHolder'
         title='Hide emote holder'
         subtitle='Hide emote holder from top of the chat input'
-        toggleCallback={() => chrome.runtime.sendMessage('initToggleEmoteHolder')}
+        toggleCallback={() => initEvent('initToggleEmoteHolder')}
       />
     </div>
   );

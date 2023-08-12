@@ -1,3 +1,5 @@
+import type { EventKey } from './components/events/event-constants.ts';
+
 chrome.scripting.registerContentScripts([
   {
     id: 'kickkit',
@@ -7,21 +9,13 @@ chrome.scripting.registerContentScripts([
   },
 ]);
 
-const getTabId = async () => {
-  const tabs = await chrome.tabs.query({
-    active: true,
-    currentWindow: true,
-  });
-  return tabs[0].id;
-};
-
-chrome.runtime.onMessage.addListener(async (message) => {
-  if (message === 'initToggleTopGifters') {
-    chrome.tabs.sendMessage((await getTabId()) || 0, 'toggleTopGifters');
-  }
-  if (message === 'initToggleEmoteHolder') {
-    chrome.tabs.sendMessage((await getTabId()) || 0, 'toggleEmoteHolder');
+chrome.runtime.onMessage.addListener((eventKey: EventKey) => {
+  if (eventKey) {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const tab = tabs[0];
+      if (tab && tab.id) {
+        chrome.tabs.sendMessage(tab.id, eventKey);
+      }
+    });
   }
 });
-
-export default {};
